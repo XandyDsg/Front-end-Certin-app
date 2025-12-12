@@ -1,0 +1,50 @@
+:root{
+  --cactus-700: #1f7a4c;
+  --cactus-500: #38a169;
+  --cactus-300: #9be3b3;
+  --bg: #fbf9f5;
+  --muted: #6b6b6b;
+  --card: #ffffff;
+}
+
+*{box-sizing: border-box}
+body{
+  margin:0;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: var(--bg);
+  color: #222;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+a{ color: var(--cactus-700); text-decoration:none; }
+.btn{
+  background: var(--cactus-700);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius:8px;
+  cursor:pointer;
+}
+.btn.small{ padding:6px 8px; font-size:0.9rem }
+.btn.ghost{
+  background: transparent;
+  border: 1px solid #ddd;
+  color: #222;
+}
+
+.form-field{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  margin-bottom:10px;
+}
+.form-field input, .form-field textarea{
+  padding:10px;
+  border-radius:8px;
+  border:1px solid #e6e6e6;
+  background: #fff;
+}
+
+.field-label{ font-size:0.9rem; color:var(--muted) }
+.card { background: var(--card); padding:16px; border-radius:10px; box-shadow:0 1px 3px rgba(0,0,0,0.04)}

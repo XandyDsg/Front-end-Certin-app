@@ -1,0 +1,5 @@
+.detalhe-page{ max-width:900px; margin:20px auto; padding:16px; }
+.detalhe-card{ background:#fff; padding:18px; border-radius:10px; }
+.meta{ color:var(--muted); font-size:0.95rem; margin-top:6px; }
+.tags{ margin-top:12px; display:flex; gap:8px; flex-wrap:wrap; }
+.tag{ background:var(--cactus-300); padding:6px 10px; border-radius:999px; font-size:0.85rem; }
