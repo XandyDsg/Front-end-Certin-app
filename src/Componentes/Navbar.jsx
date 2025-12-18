@@ -1,19 +1,33 @@
 import { Link, useNavigate } from "react-router-dom";
 import "../Interface/navbar.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Navbar() {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    // Simula chamada à API para buscar usuários
+    async function fetchUsers() {
+      const response = await fetch("https://jsonplaceholder.typicode.com/users");
+      const data = await response.json();
+      setUsers(data);
+    }
+
+    fetchUsers();
+  }, []);
 
   function buscarUsuario(e) {
     e.preventDefault();
     if (!query.trim()) return;
 
-    // busca no localStorage (somente 1 user por enquanto)
-    const user = JSON.parse(localStorage.getItem("certin_user") || "null");
+    // Busca nos usuários da API
+    const user = users.find((user) =>
+      user.name.toLowerCase().includes(query.toLowerCase())
+    );
 
-    if (user && user.nome.toLowerCase().includes(query.toLowerCase())) {
+    if (user) {
       navigate(`/usuario/${user.id}`);
     } else {
       alert("Usuário não encontrado!");
