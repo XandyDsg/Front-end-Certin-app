@@ -220,7 +220,7 @@ export default function Dashboard() {
             Perfil
           </button>
           <button className={`tab-btn ${activeTab === "formacoes" ? "active" : ""}`} onClick={() => setActiveTab("formacoes")}>
-            Formações & Idiomas
+            Mais informações
           </button>
         </div>
 
@@ -261,7 +261,7 @@ export default function Dashboard() {
                       <textarea value={editDescricao} onChange={(e) => setEditDescricao(e.target.value)} />
                     </label>
                     <label className="form-field">
-                      <span className="field-label">Curso</span>
+                      <span className="field-label">Cursando atualmente</span>
                       <input value={editCurso} onChange={(e) => setEditCurso(e.target.value)} />
                     </label>
                     <label className="form-field">
@@ -286,14 +286,14 @@ export default function Dashboard() {
             </section>
 
             <section className="my-certs">
-              <h3>Meus Certificados</h3>
+              <h3>Editar Meus Certificados</h3>
               <div className="cert-grid">
                 {myCerts.length === 0 && <p>Você ainda não adicionou certificados visíveis aqui.</p>}
                 {myCerts.map((c) => (
                   <Card key={c.id} title={c.titulo} subtitle={c.data}>
                     <p>{c.descricao}</p>
                     <div style={{ marginTop: 8 }}>
-                      <button className="btn ghost" onClick={() => deletarCert(c.id)}>
+                      <button className="btn-ghost" onClick={() => deletarCert(c.id)}>
                         Deletar
                       </button>
                     </div>
@@ -308,7 +308,7 @@ export default function Dashboard() {
           <section className="formacoes-section">
             <div className="two-col">
               <div className="col">
-                <h3>Formações</h3>
+                <h3>Graduações e formações concluídas</h3>
                 <form onSubmit={adicionarFormacao} className="small-form">
                   <label className="form-field">
                     <span className="field-label">Curso</span>
@@ -345,7 +345,7 @@ export default function Dashboard() {
               </div>
 
               <div className="col">
-                <h3>Idiomas</h3>
+                <h3>Nível e idiomas conhecidos</h3>
                 <form onSubmit={adicionarIdioma} className="small-form">
                   <label className="form-field">
                     <span className="field-label">Idioma</span>
@@ -386,7 +386,7 @@ export default function Dashboard() {
         )}
       </main>
 
-      <Modal show={showModal} onClose={() => setShowModal(false)} title="Adicionar Certificado">
+      <Modal show={showModal} onClose={() => setShowModal(false)} title="Informações do Certificado">
         <form onSubmit={adicionarCertificado} className="modal-form">
           <Input label="Título" value={titulo} onChange={(e) => setTitulo(e.target.value)} />
           <label className="form-field">
@@ -394,7 +394,7 @@ export default function Dashboard() {
             <textarea value={descricao} onChange={(e) => setDescricao(e.target.value)} />
           </label>
           <label className="form-field">
-            <span className="field-label">Tags (vírgula separa)</span>
+            <span className="field-label">Palavras-chave (vírgula separa)</span>
             <input value={tags} onChange={(e) => setTags(e.target.value)} placeholder="Ex: Extensão, Pesquisa" />
           </label>
           <label className="form-field">

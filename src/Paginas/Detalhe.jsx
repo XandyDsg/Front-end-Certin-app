@@ -40,7 +40,7 @@ export default function Detalhe() {
             </div>
           </div>
           <div className="detalhe-actions">
-            <button className="btn" onClick={() => navigate(-1)}>Voltar</button>
+            <button className="btn" onClick={() => navigate(-1)}>X</button>
           </div>
         </article>
       </main>

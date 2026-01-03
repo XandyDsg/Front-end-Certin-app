@@ -3,3 +3,4 @@
 .meta{ color:var(--muted); font-size:0.95rem; margin-top:6px; }
 .tags{ margin-top:12px; display:flex; gap:8px; flex-wrap:wrap; }
 .tag{ background:var(--cactus-300); padding:6px 10px; border-radius:999px; font-size:0.85rem; }
+.btn{ background:var(--cactus-500); color:#fff; border:none; padding:8px 16px; border-radius:8px; cursor:pointer; }

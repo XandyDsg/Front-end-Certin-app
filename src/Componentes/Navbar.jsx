@@ -49,8 +49,8 @@ export default function Navbar() {
         </form>
 
         <div className="nav-links">
-          <Link to="/feed">Painel Geral</Link>
-          <Link to="/dashboard">Meu Perfil</Link>
+          <Link to="/dashboard">Perfil</Link>
+          <Link to="/feed">Meus Certificados</Link>
         </div>
       </nav>
     </header>

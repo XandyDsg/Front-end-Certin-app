@@ -22,7 +22,7 @@ export default function Feed() {
     <>
       <Navbar />
       <main className="feed-page">
-        <h2>Painel de Certificados</h2>
+        <h2 className="card-header">Painel de Certificados</h2>
         <section className="feed-grid">
           {items.map((c) => (
             <Card key={c.id} title={c.titulo} subtitle={`${c.usuario} • ${c.data}`}>
