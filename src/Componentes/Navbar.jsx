@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { FaBriefcase, FaCertificate, FaFile, FaFileArchive, FaUser } from "react-icons/fa";
 import "../Interface/navbar.css";
 import CertinLogo from "../assets/Certin.png";
 
@@ -55,10 +56,21 @@ export default function Navbar() {
           </form>
 
           <div className="nav-links">
-            <Link to="/VagasProjetos">Vagas e Projetos</Link>
-            <Link to="/feed">Mural de Certificados</Link>
-            <Link to="/dashboard">Perfil</Link>
-          </div>
+          <Link to="/VagasProjetos" className="nav-item">
+            <FaBriefcase className="nav-icon" />
+            <span>Vagas e Projetos</span>
+          </Link>
+
+          <Link to="/feed" className="nav-item">
+            <FaFile className="nav-icon" />
+            <span>Mural de Certificados</span>
+          </Link>
+
+          <Link to="/dashboard" className="nav-item">
+            <FaUser className="nav-icon" />
+            <span>Perfil</span>
+          </Link>
+        </div>
         </div>
       </nav>
     </header>
