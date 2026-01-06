@@ -16,7 +16,9 @@ export default function Login() {
   useEffect(() => {
     // se já tiver user em localStorage, redireciona pro dashboard (facilitar demo)
     const user = localStorage.getItem("certin_user");
+    const professor = localStorage.getItem("certin_professor");
     if (user) navigate("/dashboard");
+    if (professor) navigate("/Perfil");
   }, []);
 
   function validarEmail(e) {
@@ -74,10 +76,13 @@ export default function Login() {
 
             <div className="login-actions">
               <Button type="submit">{mode === "login" ? "Entrar" : "Registrar"}</Button>
+              <Button type="submit">{mode === "login" ? "Sou Professor" : "Registrar"}</Button>
               <button type="button" className="link-btn" onClick={() => { setMode(mode === "login" ? "register" : "login"); setError(""); }}>
                 {mode === "login" ? "Criar uma conta" : "Já tenho conta"}
               </button>
+              
             </div>
+            
           </form>
         </section>
       </main>

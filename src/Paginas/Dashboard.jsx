@@ -240,17 +240,13 @@ export default function Dashboard() {
                         {user?.curso ?? "Curso não informado"} &middot; {user?.instituicao ?? "Instituição não informada"} &middot;{" "}
                         {user?.semestre ? `${user.semestre}º semestre` : "Semestre não informado"}
                       </p>
-                      <p className="total-certs">Total de certificados: {myCerts.length}</p>
                     </div>
                     <div className="profile-actions">
-                      <button className="btn" onClick={() => setShowModal(true)}>
-                        Adicionar Certificado
-                      </button>
                       <button className="btn" onClick={editarPerfil}>
                         Editar Perfil
                       </button>
                       <button className="btn ghost" onClick={logout}>
-                        Sair
+                        Logout
                       </button>
                     </div>
                   </>
@@ -284,7 +280,6 @@ export default function Dashboard() {
                 )}
               </div>
             </section>
-
             <section className="my-certs">
               <h3>Editar Meus Certificados</h3>
               <div className="cert-grid">
@@ -298,92 +293,140 @@ export default function Dashboard() {
                       </button>
                     </div>
                   </Card>
+                  
                 ))}
               </div>
+              <div className="profile-actions">
+                      <button className="btn" onClick={() => setShowModal(true)}>
+                        Adicionar Certificado
+                      </button>
+                       <p className="total-certs">Total de certificados: {myCerts.length}</p>
+                      </div>
             </section>
           </>
         )}
 
-        {activeTab === "formacoes" && (
-          <section className="formacoes-section">
-            <div className="two-col">
-              <div className="col">
-                <h3>Graduações e formações concluídas</h3>
-                <form onSubmit={adicionarFormacao} className="small-form">
-                  <label className="form-field">
-                    <span className="field-label">Curso</span>
-                    <input value={eduCurso} onChange={(e) => setEduCurso(e.target.value)} placeholder="Nome do curso" />
-                  </label>
-                  <label className="form-field">
-                    <span className="field-label">Instituição</span>
-                    <input value={eduInstituicao} onChange={(e) => setEduInstituicao(e.target.value)} placeholder="Instituição" />
-                  </label>
-                  <label className="form-field">
-                    <span className="field-label">Ano / Conclusão</span>
-                    <input value={eduAno} onChange={(e) => setEduAno(e.target.value)} placeholder="Ex: 2022" />
-                  </label>
-                  <div className="form-actions">
-                    <button className="btn" type="submit">
-                      Adicionar Formação
-                    </button>
-                  </div>
-                </form>
+      {activeTab === "formacoes" && (
+  <section className="my-certs">
+    <div className="two-col">
+      
+      {/* ---- FORMAÇÕES ---- */}
+      <div className="col">
+        <h3>Graduações e formações concluídas</h3>
 
-                <div className="list">
-                  {formacoes.length === 0 && <p>Sem formações cadastradas.</p>}
-                  {formacoes.map((f) => (
-                    <Card key={f.id} title={f.curso || "—"} subtitle={f.instituicao || ""}>
-                      <p>{f.ano}</p>
-                      <div style={{ marginTop: 8 }}>
-                        <button className="btn ghost" onClick={() => deletarFormacao(f.id)}>
-                          Remover
-                        </button>
-                      </div>
-                    </Card>
-                  ))}
-                </div>
+        <div className="list">
+          {formacoes.length === 0 && <p>Sem formações cadastradas.</p>}
+
+          {formacoes.map((f) => (
+            <Card
+              key={f.id}
+              title={f.curso || "—"}
+              subtitle={f.instituicao || ""}
+            >
+              <p>{f.ano}</p>
+              <div style={{ marginTop: 8 }}>
+                <button
+                  className="btn ghost"
+                  onClick={() => deletarFormacao(f.id)}
+                >
+                  Remover
+                </button>
               </div>
+            </Card>
+          ))}
+        </div>
 
-              <div className="col">
-                <h3>Nível e idiomas conhecidos</h3>
-                <form onSubmit={adicionarIdioma} className="small-form">
-                  <label className="form-field">
-                    <span className="field-label">Idioma</span>
-                    <input value={idiomaNome} onChange={(e) => setIdiomaNome(e.target.value)} placeholder="Ex: Inglês" />
-                  </label>
-                  <label className="form-field">
-                    <span className="field-label">Nível</span>
-                    <select value={idiomaNivel} onChange={(e) => setIdiomaNivel(e.target.value)}>
-                      <option>Básico</option>
-                      <option>Intermediário</option>
-                      <option>Avançado</option>
-                      <option>Fluente</option>
-                      <option>Nativo</option>
-                    </select>
-                  </label>
-                  <div className="form-actions">
-                    <button className="btn" type="submit">
-                      Adicionar Idioma
-                    </button>
-                  </div>
-                </form>
+        <form className="profile-edit-form" onSubmit={adicionarFormacao}>
+          <label className="form-field">
+            <span className="field-label">Curso</span>
+            <input
+              value={eduCurso}
+              onChange={(e) => setEduCurso(e.target.value)}
+              placeholder="Nome do curso"
+            />
+          </label>
 
-                <div className="list">
-                  {idiomas.length === 0 && <p>Sem idiomas cadastrados.</p>}
-                  {idiomas.map((i) => (
-                    <Card key={i.id} title={i.idioma} subtitle={i.nivel}>
-                      <div style={{ marginTop: 8 }}>
-                        <button className="btn ghost" onClick={() => deletarIdioma(i.id)}>
-                          Remover
-                        </button>
-                      </div>
-                    </Card>
-                  ))}
-                </div>
+          <label className="form-field">
+            <span className="field-label">Instituição</span>
+            <input
+              value={eduInstituicao}
+              onChange={(e) => setEduInstituicao(e.target.value)}
+              placeholder="Instituição"
+            />
+          </label>
+
+          <label className="form-field">
+            <span className="field-label">Ano / Conclusão</span>
+            <input
+              value={eduAno}
+              onChange={(e) => setEduAno(e.target.value)}
+              placeholder="Ex: 2022"
+            />
+          </label>
+
+          <div className="form-actions">
+            <button className="btn" type="submit">
+              Adicionar Formação
+            </button>
+          </div>
+        </form>
+      </div>
+
+      {/* ---- IDIOMAS ---- */}
+      <div className="col">
+        <h3>Nível e idiomas conhecidos</h3>
+
+         <div className="list">
+          {idiomas.length === 0 && <p>Sem idiomas cadastrados.</p>}
+          
+          {idiomas.map((i) => (
+            <Card key={i.id} title={i.idioma} subtitle={i.nivel}>
+              <div style={{ marginTop: 8 }}>
+                <button
+                  className="btn ghost"
+                  onClick={() => deletarIdioma(i.id)}
+                >
+                  Remover
+                </button>
               </div>
-            </div>
-          </section>
-        )}
+            </Card>
+
+          ))}
+        <form className="profile-edit-form" onSubmit={adicionarIdioma}>
+          <label className="form-field">
+            <span className="field-label">Idioma</span>
+            <input
+              value={idiomaNome}
+              onChange={(e) => setIdiomaNome(e.target.value)}
+              placeholder="Ex: Inglês"
+            />
+          </label>
+
+          <label className="form-field">
+            <span className="field-label">Nível</span>
+            <select
+              value={idiomaNivel}
+              onChange={(e) => setIdiomaNivel(e.target.value)}
+            >
+              <option>Básico</option>
+              <option>Intermediário</option>
+              <option>Avançado</option>
+              <option>Fluente</option>
+              <option>Nativo</option>
+            </select>
+          </label>
+
+          <div className="form-actions">
+            <button className="btn" type="submit">
+              Adicionar Idioma
+            </button>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+  </section>
+)}
       </main>
 
       <Modal show={showModal} onClose={() => setShowModal(false)} title="Informações do Certificado">

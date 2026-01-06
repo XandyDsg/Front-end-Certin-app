@@ -5,33 +5,59 @@ import Card from "../Componentes/Card";
 import "../Interface/feed.css";
 import { mockCertificados } from "../Database/mockCertificados.js";
 
-export default function Feed() {
-  const [items, setItems] = useState([]);
+const STORAGE_KEY = "certin_feed";
 
+export default function Feed() {
+  const [certificados, setCertificados] = useState([]);
+
+  // --- carregar feed ---
   useEffect(() => {
-    // carrega mock (poderia vir de fetch em real app)
-    const stored = localStorage.getItem("certin_feed");
-    if (stored) setItems(JSON.parse(stored));
-    else {
-      setItems(mockCertificados);
-      localStorage.setItem("certin_feed", JSON.stringify(mockCertificados));
+    const stored = localStorage.getItem(STORAGE_KEY);
+
+    if (stored) {
+      setCertificados(JSON.parse(stored));
+    } else {
+      setCertificados(mockCertificados);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(mockCertificados));
     }
   }, []);
 
   return (
     <>
       <Navbar />
+
       <main className="feed-page">
-        <h2 className="card-header">Painel de Certificados</h2>
-        <section className="feed-grid">
-          {items.map((c) => (
-            <Card key={c.id} title={c.titulo} subtitle={`${c.usuario} • ${c.data}`}>
-              <p className="card-desc">{c.descricao}</p>
-              <div className="card-actions">
-                <Link to={`/item/${c.id}`} className="btn small">Ver detalhes</Link>
-              </div>
-            </Card>
-          ))}
+        <header className="feed-header">
+          <h2>Painel de Certificados</h2>
+        </header>
+
+        <section className="feed-section">
+          {certificados.length === 0 && (
+            <p className="empty-state">
+              Nenhum certificado disponível no momento.
+            </p>
+          )}
+
+          <div className="feed-grid">
+            {certificados.map((c) => (
+              <Card
+                key={c.id}
+                title={c.titulo}
+                subtitle={`${c.usuario} • ${c.data}`}
+              >
+                <p className="card-desc">{c.descricao}</p>
+
+                <div className="card-actions">
+                  <Link
+                    to={`/item/${c.id}`}
+                    className="btn small"
+                  >
+                    Ver detalhes
+                  </Link>
+                </div>
+              </Card>
+            ))}
+          </div>
         </section>
       </main>
     </>

@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import "../Interface/navbar.css";
-import { useState, useEffect } from "react";
+import CertinLogo from "../assets/Certin.png";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -8,9 +9,10 @@ export default function Navbar() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    // Simula chamada à API para buscar usuários
     async function fetchUsers() {
-      const response = await fetch("https://jsonplaceholder.typicode.com/users");
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/users"
+      );
       const data = await response.json();
       setUsers(data);
     }
@@ -22,13 +24,13 @@ export default function Navbar() {
     e.preventDefault();
     if (!query.trim()) return;
 
-    // Busca nos usuários da API
-    const user = users.find((user) =>
-      user.name.toLowerCase().includes(query.toLowerCase())
+    const user = users.find((u) =>
+      u.name.toLowerCase().includes(query.toLowerCase())
     );
 
     if (user) {
       navigate(`/usuario/${user.id}`);
+      setQuery("");
     } else {
       alert("Usuário não encontrado!");
     }
@@ -37,20 +39,26 @@ export default function Navbar() {
   return (
     <header className="nav-container">
       <nav className="nav-bar">
-        <div className="brand">Certin</div>
+        {/* Logo */}
+        <div className="brand">
+          <img src={CertinLogo} alt="Certin" className="brand-logo" />
+        </div>
 
-        <form onSubmit={buscarUsuario} className="search-bar">
-          <input
-            type="text"
-            placeholder="Buscar usuário..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </form>
+        <div className="nav-right">
+          <form onSubmit={buscarUsuario} className="search-bar">
+            <input
+              type="text"
+              placeholder="Buscar usuário..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          </form>
 
-        <div className="nav-links">
-          <Link to="/dashboard">Perfil</Link>
-          <Link to="/feed">Meus Certificados</Link>
+          <div className="nav-links">
+            <Link to="/VagasProjetos">Vagas e Projetos</Link>
+            <Link to="/feed">Mural de Certificados</Link>
+            <Link to="/dashboard">Perfil</Link>
+          </div>
         </div>
       </nav>
     </header>
