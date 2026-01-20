@@ -12,7 +12,7 @@ export default function PerfilProfessor() {
   useEffect(() => {
   async function carregarProfessor() {
     try {
-      const res = await fetch("http://localhost:8000/usuarios/me", {
+      const res = await fetch("/usuarios/me", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("certin_token")}`,
         },

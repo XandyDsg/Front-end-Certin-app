@@ -4,7 +4,7 @@ import Input from "../Componentes/Input";
 import Button from "../Componentes/Button";
 import "../Interface/login.css";
 
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Login() {
   const [mode, setMode] = useState("login"); // login | register

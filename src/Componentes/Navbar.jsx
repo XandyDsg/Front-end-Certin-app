@@ -11,7 +11,7 @@ export default function Navbar() {
   const [resultados, setResultados] = useState([]);
   const [showResults, setShowResults] = useState(false);
 
-  const API_URL = "http://localhost:8000";
+ const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     if (query.length < 2) {

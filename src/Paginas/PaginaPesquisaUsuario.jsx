@@ -4,7 +4,7 @@ import Navbar from "../Componentes/Navbar";
 import Card from "../Componentes/Card";
 import "../Interface/dashboard.css";
 
-const API_URL = "http://localhost:8000";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function PaginaPesquisaUsuario() {
   const { id } = useParams();

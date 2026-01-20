@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../Componentes/Navbar";
 import "../Interface/detalhe.css";
 
-const API_URL = "http://localhost:8000";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Detalhe() {
   const { id } = useParams();

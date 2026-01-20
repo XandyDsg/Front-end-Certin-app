@@ -5,7 +5,7 @@ import Modal from "../Componentes/Modal";
 import Input from "../Componentes/Input";
 import "../Interface/dashboard.css";
 
-const API_URL = "http://localhost:8000";
+const API_URL = import.meta.env.VITE_API_URL;;
 
 /* -------- API helper -------- */
 async function apiFetch(path, options = {}) {
