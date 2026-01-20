@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  background: #f2f2f2;
+
 }
 
 /* ===== PROFILE CARD ===== */
@@ -64,7 +64,7 @@
 .cert-grid {
   display: grid;
   gap: 12px;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   margin-top: 12px;
 }
 
@@ -136,4 +136,36 @@
   background: transparent;
   border: 1px solid var(--cactus-500);
   color: var(--cactus-700);
+}
+
+/* ===== CERTIFICATE CARD ===== */
+.cert-card {
+  background: #ffffff;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px var(--cactus-700);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+
+}
+
+.cert-card img {
+  max-width: 100%;
+  border-radius: 4px;
+}
+
+.cert-card h4 {
+  font-size: 0.95rem;
+  color: var(--cactus-700);
+  margin: 8px 0 4px;
+}
+
+.cert-card p {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 0;
 }

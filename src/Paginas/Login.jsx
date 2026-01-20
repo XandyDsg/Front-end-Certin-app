@@ -1,91 +1,173 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Input from "../Componentes/Input";
 import Button from "../Componentes/Button";
 import "../Interface/login.css";
 
+const API_URL = "http://127.0.0.1:8000";
+
 export default function Login() {
-  const [mode, setMode] = useState("login"); // 'login' or 'register'
+  const [mode, setMode] = useState("login"); // login | register
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [senha2, setSenha2] = useState("");
   const [nome, setNome] = useState("");
+  const [tipo, setTipo] = useState("aluno"); // aluno | professor
   const [error, setError] = useState("");
+
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // se já tiver user em localStorage, redireciona pro dashboard (facilitar demo)
-    const user = localStorage.getItem("certin_user");
-    const professor = localStorage.getItem("certin_professor");
-    if (user) navigate("/dashboard");
-    if (professor) navigate("/Perfil");
-  }, []);
-
-  function validarEmail(e) {
-    return /\S+@\S+\.\S+/.test(e);
-  }
-
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     setError("");
-    if (!validarEmail(email)) return setError("E-mail inválido");
-    if (senha.length < 6) return setError("Senha precisa ter >= 6 caracteres");
-    if (mode === "register") {
-      if (senha !== senha2) return setError("As senhas não coincidem");
-      if (!nome.trim()) return setError("Informe seu nome");
-      // simula registro salvando no localStorage (apenas demo)
-      const user = { id: Date.now(), nome, email, descricao: "Olá!", avatar: null };
-      localStorage.setItem("certin_user", JSON.stringify(user));
-      navigate("/dashboard");
-    } else {
-      // login fictício: aceita qualquer email/senha (desde que validados)
-      const stored = localStorage.getItem("certin_user");
-      if (stored) {
-        const user = JSON.parse(stored);
-        if (user.email !== email) {
-          // permite login mesmo se o e-mail for diferente — professor verá fluxo
-          localStorage.setItem("certin_user", JSON.stringify({ ...user, email }));
+
+    if (!email || !senha) {
+      return setError("Preencha todos os campos");
+    }
+
+    try {
+      /* ================= REGISTRO ================= */
+      if (mode === "register") {
+        if (!nome) return setError("Informe seu nome");
+        if (senha !== senha2) return setError("As senhas não coincidem");
+
+        const registerRes = await fetch(`${API_URL}/usuarios/signup`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nome,
+            email,
+            senha,
+            tipo
+          })
+        });
+
+        if (!registerRes.ok) {
+          const err = await registerRes.json();
+          throw new Error(err.detail || "Erro ao criar conta");
         }
-      } else {
-        // cria usuário mock se não existir
-        const user = { id: Date.now(), nome: "Usuário Teste", email, descricao: "", avatar: null };
-        localStorage.setItem("certin_user", JSON.stringify(user));
       }
-      navigate("/dashboard");
+
+      /* ================= LOGIN ================= */
+      const loginRes = await fetch(`${API_URL}/usuarios/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email,
+          senha
+        })
+      });
+
+
+      if (!loginRes.ok) {
+        const err = await loginRes.json();
+        throw new Error(err.detail || "E-mail ou senha inválidos");
+      }
+
+      const { access_token } = await loginRes.json();
+      localStorage.setItem("certin_token", access_token);
+
+      /* ================= ME ================= */
+      const meRes = await fetch(`${API_URL}/usuarios/me`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`
+        }
+      });
+
+      if (!meRes.ok) throw new Error("Erro ao carregar perfil");
+
+      const user = await meRes.json();
+      localStorage.setItem("certin_user", JSON.stringify(user));
+
+      /* ================= REDIRECT ================= */
+      navigate(user.tipo === "professor" ? "/Perfil_professor" : "/dashboard");
+
+    } catch (err) {
+      console.error(err);
+      setError(err.message || "Erro inesperado");
     }
   }
 
   return (
-    <>
-      <main className="login-page">
-        <section className="login-card">
-          <h2>{mode === "login" ? "Entrar" : "Criar conta"}</h2>
+    <main className="login-page">
+      <section className="login-card">
+        <h2>{mode === "login" ? "Bem-vindo de volta!" : "Criar conta"}</h2>
 
-          {error && <div className="form-error">{error}</div>}
+        {error && <p className="form-error">{error}</p>}
 
-          <form onSubmit={handleSubmit} className="login-form">
-            {mode === "register" && (
-              <Input label="Nome" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Seu nome completo" />
-            )}
+        <form className="login-form" onSubmit={handleSubmit}>
+          {mode === "register" && (
+            <>
+              <Input
+                label="Nome completo"
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+              />
 
-            <Input label="E-mail" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="seu@exemplo.com" />
-            <Input label="Senha" type="password" value={senha} onChange={(e) => setSenha(e.target.value)} placeholder="******" />
-            {mode === "register" && (
-              <Input label="Confirmar senha" type="password" value={senha2} onChange={(e) => setSenha2(e.target.value)} placeholder="******" />
-            )}
+              <div className="role-select">
+                <label>
+                  <input
+                    type="radio"
+                    checked={tipo === "aluno"}
+                    onChange={() => setTipo("aluno")}
+                  />
+                  Aluno
+                </label>
 
-            <div className="login-actions">
-              <Button type="submit">{mode === "login" ? "Entrar" : "Registrar"}</Button>
-              <Button type="submit">{mode === "login" ? "Sou Professor" : "Registrar"}</Button>
-              <button type="button" className="link-btn" onClick={() => { setMode(mode === "login" ? "register" : "login"); setError(""); }}>
-                {mode === "login" ? "Criar uma conta" : "Já tenho conta"}
-              </button>
-              
-            </div>
-            
-          </form>
-        </section>
-      </main>
-    </>
+                {/* <label>
+                  <input
+                    type="radio"
+                    checked={tipo === "professor"}
+                    onChange={() => setTipo("professor")}
+                  />
+                  Professor
+                </label> */}
+              </div>
+            </>
+          )}
+
+          <Input
+            label="E-mail"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <Input
+            label="Senha"
+            type="password"
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+          />
+
+          {mode === "register" && (
+            <Input
+              label="Confirmar senha"
+              type="password"
+              value={senha2}
+              onChange={(e) => setSenha2(e.target.value)}
+            />
+          )}
+
+          <Button type="submit">
+            {mode === "login" ? "Entrar" : "Registrar"}
+          </Button>
+        </form>
+
+        <button
+          className="link-btn"
+          onClick={() => {
+            setMode(mode === "login" ? "register" : "login");
+            setError("");
+          }}
+        >
+          {mode === "login"
+            ? "Sou novo e quero criar conta"
+            : "Já possuo cadastro e quero fazer login"}
+        </button>
+      </section>
+    </main>
   );
 }

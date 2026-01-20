@@ -28,9 +28,16 @@ a{ color: var(--cactus-700); text-decoration:none; }
 }
 .btn.small{ padding:6px 8px; font-size:0.9rem }
 .btn.ghost{
-  background: transparent;
+  background: rgb(212, 212, 212);
   border: 1px solid #ddd;
   color: #222;
+  margin: 10px;
+}
+
+.btn.ghost:hover{
+  background: #fa2727;
+  border: 1px solid #ddd;
+  color: #ffffff;
 }
 
 .form-field{

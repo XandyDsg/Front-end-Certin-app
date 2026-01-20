@@ -5,6 +5,7 @@ import Detalhe from "./Detalhe";
 import Dashboard from "./Dashboard";
 import Perfil_professor from "./Professor/Perfil_professor.jsx";
 import VagasProjetos from "./Professor/VagasProjetos.jsx";
+import PaginaPesquisaUsuario from "./PaginaPesquisaUsuario.jsx";
 
 export default function App() {
   return (
@@ -17,7 +18,7 @@ export default function App() {
       <Route path="Login" element={<Login />} />
       <Route path="/Perfil_professor" element={<Perfil_professor />} />
       <Route path="/VagasProjetos" element={<VagasProjetos />} />
-      
+      <Route path="/usuario/:id" element={<PaginaPesquisaUsuario />} />
     </Routes>
   );
 }

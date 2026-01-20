@@ -10,54 +10,36 @@ export default function PerfilProfessor() {
   const [tipo, setTipo] = useState("projeto");
 
   useEffect(() => {
-    const professor = JSON.parse(
-      localStorage.getItem("certin_professor")
-    );
+  async function carregarProfessor() {
+    try {
+      const res = await fetch("http://localhost:8000/usuarios/me", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("certin_token")}`,
+        },
+      });
 
-    if (professor) {
-      setUser(professor);
+      if (!res.ok) throw new Error("Não autorizado");
+
+      const data = await res.json();
+
+      if (data.tipo !== "professor") {
+        throw new Error("Usuário não é professor");
+      }
+
+      setUser(data);
+    } catch (err) {
+      console.error(err);
+      setUser(null);
     }
-
-    const storedAnuncios =
-      JSON.parse(localStorage.getItem("certin_anuncios")) || [];
-    setAnuncios(storedAnuncios);
-  }, []);
-
-  function criarAnuncio(e) {
-    e.preventDefault();
-
-    if (!titulo.trim() || !descricao.trim()) {
-      alert("Preencha título e descrição");
-      return;
-    }
-
-    const novo = {
-      id: Date.now(),
-      titulo,
-      descricao,
-      tipo,
-      autor: user.nome,
-      email: user.email,
-      data: new Date().toLocaleDateString()
-    };
-
-    const atualizados = [novo, ...anuncios];
-    setAnuncios(atualizados);
-    localStorage.setItem("certin_anuncios", JSON.stringify(atualizados));
-
-    setTitulo("");
-    setDescricao("");
-    setTipo("projeto");
   }
 
-  // 🔒 Proteção básica
-  if (!user) {
-    return (
-      <main className="dashboard-page">
-        <p>Carregando perfil do professor...</p>
-      </main>
-    );
-  }
+  carregarProfessor();
+
+  const storedAnuncios =
+    JSON.parse(localStorage.getItem("certin_anuncios")) || [];
+  setAnuncios(storedAnuncios);
+}, []);
+
 
   return (
     <>

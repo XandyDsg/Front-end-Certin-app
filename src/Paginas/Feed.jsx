@@ -3,23 +3,27 @@ import { Link } from "react-router-dom";
 import Navbar from "../Componentes/Navbar";
 import Card from "../Componentes/Card";
 import "../Interface/feed.css";
-import { mockCertificados } from "../Database/mockCertificados.js";
-
-const STORAGE_KEY = "certin_feed";
+import { apiFetch } from "../services/api";
+import CertinLogo from "../assets/Certin.png";
 
 export default function Feed() {
   const [certificados, setCertificados] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // --- carregar feed ---
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-
-    if (stored) {
-      setCertificados(JSON.parse(stored));
-    } else {
-      setCertificados(mockCertificados);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(mockCertificados));
+    async function loadFeed() {
+      try {
+        const data = await apiFetch("/certificados/me");
+        setCertificados(data);
+      } catch (err) {
+        console.error(err);
+        alert("Erro ao carregar certificados");
+      } finally {
+        setLoading(false);
+      }
     }
+
+    loadFeed();
   }, []);
 
   return (
@@ -32,7 +36,9 @@ export default function Feed() {
         </header>
 
         <section className="feed-section">
-          {certificados.length === 0 && (
+          {loading && <img src={CertinLogo} alt="Certin" className="brand-carregar" />}
+
+          {!loading && certificados.length === 0 && (
             <p className="empty-state">
               Nenhum certificado disponível no momento.
             </p>
@@ -43,15 +49,14 @@ export default function Feed() {
               <Card
                 key={c.id}
                 title={c.titulo}
-                subtitle={`${c.usuario} • ${c.data}`}
+                subtitle={`${c.usuario?.nome || "Usuário"} • ${new Date(
+                  c.created_at
+                ).toLocaleDateString()}`}
               >
                 <p className="card-desc">{c.descricao}</p>
 
                 <div className="card-actions">
-                  <Link
-                    to={`/item/${c.id}`}
-                    className="btn small"
-                  >
+                  <Link to={`/item/${c.id}`} className="btn small">
                     Ver detalhes
                   </Link>
                 </div>
