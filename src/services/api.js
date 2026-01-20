@@ -1,5 +1,3 @@
-
-// Mudamos para 127.0.0.1 para alinhar com o padrão do servidor local
 const BASE_URL = import.meta.env.VITE_API_URL; 
 
 export async function apiFetch(endpoint, options = {}) {
@@ -32,6 +30,7 @@ export async function apiFetch(endpoint, options = {}) {
       localStorage.removeItem("certin_token");
       localStorage.removeItem("certin_user");
       // Opcional: window.location.href = "/"; // Redireciona para login se o token cair
+      throw new Error("Token expirado ou inválido. Faça login novamente.");
     }
 
     if (!response.ok) {
@@ -46,7 +45,7 @@ export async function apiFetch(endpoint, options = {}) {
     return await response.json();
 
   } catch (error) {
-    console.error("Erro no apiFetch:", error.message);
+    console.error("Erro no apiFetch:", error);
     throw error;
   }
 }
