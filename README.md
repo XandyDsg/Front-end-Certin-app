@@ -1,17 +1,70 @@
-# React + Vite
+# Certin — Plataforma Acadêmica de Certificados
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+O **Certin** é uma plataforma web desenvolvida como projeto acadêmico com o objetivo de permitir que estudantes e professores gerenciem perfis acadêmicos, certificados, projetos e oportunidades de forma centralizada e segura.
 
-Currently, two official plugins are available:
+O sistema foi desenvolvido seguindo a arquitetura **frontend + backend separados**, com autenticação via token JWT e integração completa entre as camadas.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🔗 Acesso ao sistema
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Frontend (Vercel):**  
+  https://front-end-certin-app.vercel.app
 
-## Expanding the ESLint configuration
+- **Backend / API (Render):**  
+  https://certin-backend-unmy.onrender.com
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-# Front-end-Certin-app
+- **Documentação da API (Swagger):**  
+  https://certin-backend-unmy.onrender.com/docs
+
+---
+
+## Como acessar o site
+
+1. Acesse o link do frontend.
+2. Caso ainda não tenha uma conta, clique em **“Sou novo e quero criar conta”**.
+3. Preencha os dados solicitados e finalize o cadastro.
+4. Após o cadastro, faça login com e-mail e senha. (Evite nesse primeiro teste, colocar email real pois ainda está em desenvolvimento)
+5. Ao entrar, o usuário passa a ter acesso às áreas protegidas do sistema, como:
+   - Perfil acadêmico
+   - Certificados
+   - Visualização de outros usuários
+   - Projetos e bolsas (quando aplicável)
+
+## Autenticação e segurança
+
+O sistema utiliza **autenticação baseada em JWT (JSON Web Token)**.
+
+- As senhas são **criptografadas com bcrypt** antes de serem armazenadas no banco de dados.
+- No login, o backend valida as credenciais e gera um token JWT.
+- Esse token é armazenado no navegador (localStorage).
+- Todas as rotas protegidas exigem o envio do token no cabeçalho da requisição.
+- O backend valida o token antes de permitir o acesso às informações.
+
+---
+
+##  Como o sistema foi desenvolvido
+
+### Backend
+- **FastAPI**
+- **SQLAlchemy**
+- **Pydantic**
+- **JWT (python-jose)**
+- **Passlib + bcrypt**
+- **SQLite (ambiente de desenvolvimento)**
+- Deploy realizado no **Render**
+
+O backend é responsável por:
+- Cadastro e autenticação de usuários
+- Gerenciamento de certificados
+- Controle de acesso por autenticação
+- Disponibilização de dados via API REST
+
+---
+
+### Frontend
+- **React**
+- **Vite**
+- **JavaScript**
+- **CSS**
+- Deploy realizado no **Vercel**
